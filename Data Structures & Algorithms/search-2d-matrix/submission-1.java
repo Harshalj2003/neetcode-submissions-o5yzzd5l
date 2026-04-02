@@ -1,0 +1,39 @@
+class Solution {
+    public boolean searchMatrix(int[][] matrix, int target){
+        int ROWS = matrix.length;
+        int COLS = matrix[0].length-1;
+
+        int top = 0, bot = ROWS - 1;
+
+        while(top <= bot){
+            int row = bot + (top - bot) / 2;
+                
+            if(target > matrix[row][COLS]){
+                top = row + 1;
+            }else if(target < matrix[row][0]){
+                bot = row - 1;
+            }else{
+                break;
+            }
+        }
+
+        if(!(top <= bot)){
+            return false;
+        }
+
+        int row  = bot + (top - bot) / 2;
+        int l = 0, r = COLS;
+
+        while(l <= r){
+            int m = l + (r - l) / 2;
+            if(target > matrix[row][m]){
+                l = m + 1;
+            }else if(target < matrix[row][m]){
+                r = m - 1;
+            }else{
+                return true;
+            }
+        }
+        return false;
+    }
+}
