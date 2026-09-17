@@ -1,26 +1,20 @@
 public class Solution {
-    public boolean isValidSudoku(char[][] board) {
-        Map<Integer, Set<Character>> cols = new HashMap<>();
-        Map<Integer, Set<Character>> rows = new HashMap<>();
-        Map<String, Set<Character>> squares = new HashMap<>();
+    public int longestConsecutive(int[] nums) {
+        Set<Integer> numSet = new HashSet<>();
+        for (int num : nums) {
+            numSet.add(num);
+        }
+        int longest = 0;
 
-        for (int r = 0; r < 9; r++) {
-            for (int c = 0; c < 9; c++) {
-                if (board[r][c] == '.') continue;
-
-                String squareKey = (r / 3) + "," + (c / 3);
-
-                if (rows.computeIfAbsent(r, k -> new HashSet<>()).contains(board[r][c]) ||
-                    cols.computeIfAbsent(c, k -> new HashSet<>()).contains(board[r][c]) ||
-                    squares.computeIfAbsent(squareKey, k -> new HashSet<>()).contains(board[r][c])) {
-                    return false;
+        for (int num : numSet) {
+            if (!numSet.contains(num - 1)) {
+                int length = 1;
+                while (numSet.contains(num + length)) {
+                    length++;
                 }
-
-                rows.get(r).add(board[r][c]);
-                cols.get(c).add(board[r][c]);
-                squares.get(squareKey).add(board[r][c]);
+                longest = Math.max(longest, length);
             }
         }
-        return true;
+        return longest;
     }
 }
