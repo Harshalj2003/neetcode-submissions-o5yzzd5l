@@ -1,24 +1,38 @@
-public class Solution {
-    public int findDuplicate(int[] nums) {
-        int n = nums.length;
-        int res = 0;
-        for (int b = 0; b < 32; b++) {
-            int x = 0, y = 0;
-            int mask = 1 << b;
-            for (int num : nums) {
-                if ((num & mask) != 0) {
-                    x++;
-                }
-            }
-            for (int num = 1; num < n; num++) {
-                if ((num & mask) != 0) {
-                    y++;
-                }
-            }
-            if (x > y) {
-                res |= mask;
+public class LRUCache {
+
+    private ArrayList<int[]> cache;
+    private int capacity;
+
+    public LRUCache(int capacity) {
+        this.cache = new ArrayList<>();
+        this.capacity = capacity;
+    }
+
+    public int get(int key) {
+        for (int i = 0; i < cache.size(); i++) {
+            if (cache.get(i)[0] == key) {
+                int[] tmp = cache.remove(i);
+                cache.add(tmp);
+                return tmp[1];
             }
         }
-        return res;
+        return -1;
+    }
+
+    public void put(int key, int value) {
+        for (int i = 0; i < cache.size(); i++) {
+            if (cache.get(i)[0] == key) {
+                int[] tmp = cache.remove(i);
+                tmp[1] = value;
+                cache.add(tmp);
+                return;
+            }
+        }
+
+        if (capacity == cache.size()) {
+            cache.remove(0);
+        }
+
+        cache.add(new int[]{key, value});
     }
 }
